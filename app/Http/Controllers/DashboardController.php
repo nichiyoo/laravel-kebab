@@ -18,6 +18,7 @@ class DashboardController extends Controller
 			->join('order_items', 'order_items.product_id', '=', 'products.id')
 			->join('orders', 'orders.id', '=', 'order_items.order_id')
 			->where('orders.outlet_id', auth()->user()->outlet->id)
+			->where('orders.created_at', '>=', now()->subDays(30))
 			->groupBy('products.id')
 			->orderBy('items_count', 'desc')
 			->take(10)

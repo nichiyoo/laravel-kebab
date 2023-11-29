@@ -23,7 +23,15 @@ class DashboardController extends Controller
 			'archive' => User::onlyTrashed()->count(),
 		];
 
-		$products = Product::withCount('items')->orderBy('items_count', 'desc')->take(10)->get();
+
+		$products = Product::selectRaw('products.*, SUM(order_items.quantity) as items_count')
+			->join('order_items', 'order_items.product_id', '=', 'products.id')
+			->join('orders', 'orders.id', '=', 'order_items.order_id')
+			->where('orders.created_at', '>=', now()->subDays(30))
+			->groupBy('products.id')
+			->orderBy('items_count', 'desc')
+			->take(10)
+			->get();
 
 		$orders = Order::selectRaw('DATE(created_at) as date, SUM(total) as total')
 			->where('created_at', '>=', now()->subDays(30))

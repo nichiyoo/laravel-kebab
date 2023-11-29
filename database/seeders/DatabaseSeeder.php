@@ -24,20 +24,20 @@ class DatabaseSeeder extends Seeder
 			'role' => 'admin',
 		]);
 
-		Outlet::factory()->count(30)->create();
-		Product::factory()->count(100)->create();
+		// Outlet::factory()->count(30)->create();
+		// Product::factory()->count(100)->create();
 
-		Order::factory()->count(500)->create()
-			->each(function (Order $order) {
-				OrderItem::factory()->count(rand(1, 10))->create([
-					'order_id' => $order->id,
-				]);
-			});
+		// Order::factory()->count(500)->create()
+		// 	->each(function (Order $order) {
+		// 		OrderItem::factory()->count(rand(1, 10))->create([
+		// 			'order_id' => $order->id,
+		// 		]);
+		// 	});
 
-		Order::all()->each(function (Order $order) {
-			$order->update([
-				'total' => $order->items->sum('subtotal'),
-			]);
-		});
+		// Order::all()->each(function (Order $order) {
+		// 	$order->update([
+		// 		'total' => $order->items->sum('subtotal'),
+		// 	]);
+		// });
 	}
 }
