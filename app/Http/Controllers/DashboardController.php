@@ -14,12 +14,6 @@ class DashboardController extends Controller
 	 */
 	public function index(): View
 	{
-		// $products = Product::withCount(['items' => function ($query) {
-		// 	$query->where('outlet_id', auth()->user()->outlet->id);
-		// }])->orderBy('items_count', 'desc')->take(10)->get();
-
-		// product is owned by OrderItem, orderItem is owned by Order, order is owned by Outlet
-		// choose only products that are owned by the current outlet
 		$products = Product::selectRaw('products.*, SUM(order_items.quantity) as items_count')
 			->join('order_items', 'order_items.product_id', '=', 'products.id')
 			->join('orders', 'orders.id', '=', 'order_items.order_id')

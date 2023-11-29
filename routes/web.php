@@ -30,7 +30,11 @@ Route::middleware('auth')->group(function () {
 	})->name('home');
 });
 
-Auth::routes();
+Auth::routes([
+	'register' => false,
+	'reset' => false,
+	'verify' => false,
+]);
 
 Route::prefix('admins')->name('admins.')->middleware(['auth', 'role:admin'])->group(function () {
 	Route::resource('dashboard', AdminDashboardController::class)->only(['index']);
